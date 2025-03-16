@@ -3,6 +3,7 @@ package com.example.fetch_api_activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,27 +20,55 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fetchrewards.ui.theme.FetchRewardsTheme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            FetchRewardsTheme {
+        setContent { // set jetpack compose UI
+            FetchRewardsTheme(darkTheme = false) {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    ItemList()
+                    MainScreen()
                 }
             }
         }
     }
-
     @Composable
-    fun ItemList() {
-        val fetchRewardsViewModel: FetchRewardsViewModel = viewModel()
-        val items = fetchRewardsViewModel.items.value
+    fun MainScreen() {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp), // Spacing between elements
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Title
+            Text(
+                text = "Fetch Rewards Items",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
+            )
 
-        LazyColumn {
+            // Button to refresh items
+            Button(onClick = { /* TODO: Add refresh logic */ }) {
+                Text("Refresh Items")
+            }
+
+            // Item list (existing Composable)
+            ItemList()
+        }
+    }
+    @Composable // building blocks of UI, jetpack compose UI function
+    fun ItemList() {
+        val fetchRewardsViewModel: FetchRewardsViewModel = viewModel() // init ViewModel
+        val items = fetchRewardsViewModel.items.value // get current item states
+
+        LazyColumn { // for scrolling
             items(items) { item ->
                 Column(modifier = Modifier.padding(8.dp)) {
                     BasicText(
@@ -54,7 +83,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
         fetchRewardsViewModel.fetchData()
     }
 }

@@ -20,4 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "fetch_api_activity"
-include(":app")
+include(":app") // app module
+//include ("own_library")

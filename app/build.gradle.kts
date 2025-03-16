@@ -9,16 +9,17 @@ android {
     namespace = "com.example.fetch_api_activity"
 
     defaultConfig {
-        applicationId = "com.example.fetch_api_activity"
+        applicationId = "com.example.fetch_api_activity" // for google play console
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 33 // highest Android sdk to run on
         versionCode = 1
         versionName = "1.0"
     }
-    buildTypes {
+    buildTypes { // specific stage of the application
         release {
-//            minifyEnabled = false
+//            isMinifyEnabled = false // to protect source code
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     kotlinOptions {
@@ -33,6 +34,7 @@ android {
 }
 
 dependencies {
+    // implementation(project("own_libraries"))
     // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.4.0")
     implementation("androidx.compose.material3:material3:1.0.0")

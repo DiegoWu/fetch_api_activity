@@ -3,5 +3,5 @@ import retrofit2.http.GET
 
 interface FetchRewardsApi {
     @GET("hiring.json")
-    suspend fun getItems(): List<Item>
+    suspend fun getItems(): List<Item> // async function
 }

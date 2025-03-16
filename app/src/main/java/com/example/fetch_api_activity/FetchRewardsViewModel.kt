@@ -10,10 +10,11 @@ import kotlin.collections.*
 class FetchRewardsViewModel : ViewModel() {
     private val api = ApiClient.api
 
+    // allow UI to react to data changes by automatically re-rendering the UI when the data changes
     val items = mutableStateOf<List<Item>>(emptyList())
 
     fun fetchData() {
-        viewModelScope.launch {
+        viewModelScope.launch { // coroutine scope, launch is used to start for async task
             val fetchedItems = api.getItems()
                 .filter { !it.name.isNullOrBlank() }
                 .sortedWith(compareBy({ it.listId }, { it.name }))
