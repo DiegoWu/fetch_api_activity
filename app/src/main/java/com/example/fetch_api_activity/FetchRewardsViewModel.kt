@@ -12,14 +12,24 @@ class FetchRewardsViewModel : ViewModel() {
 
     // allow UI to react to data changes by automatically re-rendering the UI when the data changes
     val items = mutableStateOf<List<Item>>(emptyList())
-
+    var isClicked = false
+    init {
+        fetchData()
+    }
     fun fetchData() {
+        isClicked = false
         viewModelScope.launch { // coroutine scope, launch is used to start for async task
             val fetchedItems = api.getItems()
                 .filter { !it.name.isNullOrBlank() }
                 .sortedWith(compareBy({ it.listId }, { it.name }))
 
             items.value = fetchedItems
+        }
+    }
+    fun clearItems() {
+        viewModelScope.launch {
+            isClicked = true
+            items.value = emptyList()
         }
     }
 }

@@ -54,11 +54,6 @@ class MainActivity : ComponentActivity() {
                 textAlign = TextAlign.Center
             )
 
-            // Button to refresh items
-            Button(onClick = { /* TODO: Add refresh logic */ }) {
-                Text("Refresh Items")
-            }
-
             // Item list (existing Composable)
             ItemList()
         }
@@ -67,22 +62,35 @@ class MainActivity : ComponentActivity() {
     fun ItemList() {
         val fetchRewardsViewModel: FetchRewardsViewModel = viewModel() // init ViewModel
         val items = fetchRewardsViewModel.items.value // get current item states
-
-        LazyColumn { // for scrolling
-            items(items) { item ->
-                Column(modifier = Modifier.padding(8.dp)) {
-                    BasicText(
-                        text = "Item Name: ${item.name}",
-                        style = TextStyle(fontSize = 20.sp)
-                    )
-                    BasicText(
-                        text = "List ID: ${item.listId}",
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
+        val isClicked = fetchRewardsViewModel.isClicked
+        // UI elements
+        Column {
+            val text = if(isClicked) "show Items" else "clear Items"
+            if(isClicked == false) {
+                Button(onClick = { fetchRewardsViewModel.clearItems() }) {
+                    Text(text)
+                }
+            } else {
+                Button(onClick = { fetchRewardsViewModel.fetchData() }) {
+                    Text(text)
                 }
             }
+            LazyColumn { // for scrolling
+                items(items) { item ->
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        BasicText(
+                            text = "Item Name: ${item.name}",
+                            style = TextStyle(fontSize = 20.sp)
+                        )
+                        BasicText(
+                            text = "List ID: ${item.listId}",
+                            style = TextStyle(fontSize = 16.sp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+//            fetchRewardsViewModel.fetchData()
         }
-        fetchRewardsViewModel.fetchData()
     }
 }
