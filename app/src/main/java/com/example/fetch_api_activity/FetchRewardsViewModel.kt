@@ -12,6 +12,7 @@ class FetchRewardsViewModel : ViewModel() {
 
     // allow UI to react to data changes by automatically re-rendering the UI when the data changes
     val items = mutableStateOf<List<Item>>(emptyList())
+
     var isClicked = false
     init {
         fetchData()
