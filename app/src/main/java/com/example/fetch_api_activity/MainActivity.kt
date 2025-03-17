@@ -51,7 +51,12 @@ class MainActivity : ComponentActivity() {
         val items = fetchRewardsViewModel.items.value // get current item states
         val isClicked = fetchRewardsViewModel.isClicked
         // UI elements
-        Column {
+        Column (
+            modifier = Modifier.fillMaxSize(),
+//            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+
             val text = if (isClicked) "show Items" else "clear Items"
             if (!isClicked) {
                 Button(onClick = { fetchRewardsViewModel.clearItems() }) {
@@ -62,8 +67,12 @@ class MainActivity : ComponentActivity() {
                     Text(text)
                 }
             }
+            Button(onClick = { selectedItems.value = mutableSetOf() }) {
+                Text("Clear Selection")
+            }
             LazyColumn {
-                items(items) { item ->
+                val sortedItems = items.sortedByDescending { selectedItems.value.contains(it) }
+                items(sortedItems) { item ->
                     SelectableItem(
                         item = item,
                         isSelected = selectedItems.value.contains(item),
@@ -71,6 +80,7 @@ class MainActivity : ComponentActivity() {
                             val newSelection = selectedItems.value.toMutableSet()
                             if (!newSelection.add(it)) newSelection.remove(it) // Toggle selection
                             selectedItems.value = newSelection
+
                         }
                     )
                 }
@@ -86,10 +96,12 @@ class MainActivity : ComponentActivity() {
                 .padding(8.dp)
                 .clickable { onSelect(item) }  // Click to select
                 .background(if (isSelected) Color.LightGray else Color.Transparent) // Change color when selected
-                .padding(8.dp)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Item Name: ${item.name}", fontSize = 20.sp)
             Text(text = "List ID: ${item.listId}", fontSize = 16.sp)
+            Text(text = "Checked: $isSelected", fontSize = 16.sp)
         }
     }
 

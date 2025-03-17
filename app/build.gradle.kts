@@ -56,6 +56,8 @@ dependencies {
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
+//    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
 
     // Jetpack Compose Preview
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.0")
